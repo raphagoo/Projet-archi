@@ -1,6 +1,6 @@
-# vue-starter
+# Back-office
 
-The structure of my usuals Vue projects
+Project's back-office to manage stripe products
 
 [![Dependency Status](https://david-dm.org/raphagoo/vue-starterv2/status.svg)](https://david-dm.org/raphagoo/vue-starterv2#info=dependencies) [![devDependency Status](https://david-dm.org/raphagoo/vue-starterv2/dev-status.svg)](https://david-dm.org/raphagoo/vue-starterv2#info=devDependencies)
 
