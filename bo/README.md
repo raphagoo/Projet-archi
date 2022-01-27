@@ -18,11 +18,6 @@ Here is a more complete [description](./description.md).
 ## Quick start
 
 ```bash
-# Clone this repo
-git clone https://github.com/psancho/vue-starter.git vue-starter
-
-# change directory to your app
-cd vue-starter
 
 # install the dependencies with npm
 npm i
