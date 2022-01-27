@@ -37,7 +37,7 @@ const mutations = {
         })
     },
     removeFromCartSuccess(state, product){
-        state.totalPrice = state.totalPrice + (product.price.data[0].unit_amount * 1.0 / 100 * product.quantity)
+        state.totalPrice = state.totalPrice - (product.price.data[0].unit_amount * 1.0 / 100 * product.quantity)
         state.products = state.products.filter(function( obj ) {
             return obj.id !== product.id;
         });

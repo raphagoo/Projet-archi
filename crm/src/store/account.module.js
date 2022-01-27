@@ -1,5 +1,6 @@
 import api from '../interfaces/apiInterface';
 import { default as log } from '../interfaces/consoleLogger'
+import {router} from "../router";
 
 const token = localStorage.getItem('token');
 const state = token
@@ -11,7 +12,7 @@ const actions = {
     login({commit}, user){
         return new Promise((resolve, reject) => {
             commit('loginRequest', user);
-            api.post('/user/login', user, { headers:{"Content-Type": "application/json"}})
+            api.post('/user/loginMarket', user, { headers:{"Content-Type": "application/json"}})
                 .then(
                     response => {
                         localStorage.setItem('token', response.data.token)
@@ -62,6 +63,7 @@ const mutations = {
     loginSuccess(state, user){
         log.info('account.module.login.success')
         state.user = user
+        router.push('/')
     },
     registerRequest(){
         log.info('account.module.register.request')
@@ -74,6 +76,7 @@ const mutations = {
         state.user = null
     },
     listUserSuccess(state, users){
+        log.info('account.module.listUser.success')
         state.list = users.data
     },
 }

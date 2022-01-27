@@ -5,6 +5,7 @@ import Home from './views/Home.vue';
 import Basket from "./views/Basket.vue";
 import Login from "./views/Login.vue";
 import User from "./views/User.vue";
+import Register from "./views/Register.vue";
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export const router = new Router({
             component: Login
         },
         {
+            path: '/register',
+            name: 'register',
+            component: Register
+        },
+        {
             path: '/user',
             name: 'user',
             component: User
@@ -41,7 +47,7 @@ export const router = new Router({
 
 router.beforeEach((to, from, next) => {
     // redirect to login page if not logged in and trying to access a restricted page
-    const publicPages = ['/login', '/register', '/', '/basket'];
+    const publicPages = ['/login', '/register', '/', '/basket', '/register'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
 

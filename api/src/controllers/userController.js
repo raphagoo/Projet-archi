@@ -29,8 +29,29 @@ export const createUser = (req, res) => {
     })
 };
 
+export const createAdmin = (req, res) => {
+
+    if(req.body.secretKey !== undefined && req.body.secretKey === process.env.SECRET_KEY) {
+        let newUser = new User(req.body);
+        if(req.body.isAdmin === false){
+            newUser.isMarket = true
+        }
+        newUser.save((err, user) => {
+            if (err) {
+                res.status(400).send(err);
+            } else {
+                //let token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60), data: user}, 'mySuperSecrett');
+                //let response = {user: user,token: token}
+                res.status(201).json(user);
+            }
+        })
+    } else {
+        res.sendStatus(403)
+    }
+};
+
 export const listUsersLocal = (req, res) => {
-    User.find({})
+    User.find({isAdmin: false, isMarket: false})
         .exec((err, users) => {
             if(err) {
                 res.status(400).send(err);
@@ -104,6 +125,48 @@ export const login = (req, res) => {
         }
     });
    
+};
+
+export const loginAdmin = (req, res) => {
+    User.findOne({email: req.body.email, isAdmin: true})
+        .exec((err, user) => {
+            if (user === null) {
+                res.sendStatus(404)
+            }
+            else{
+                bcrypt.compare(req.body.password, user.password, function(err, response) {
+                    if(response) {
+                        let token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60), data: {email: user.email}}, 'mySuperSecrett');
+                        const response = {user: user, token: token}
+                        res.status(200).json(response)
+                    } else {
+                        res.sendStatus(404)
+                    }
+                });
+            }
+        });
+
+};
+
+export const loginMarket = (req, res) => {
+    User.findOne({email: req.body.email, isMarket: true})
+        .exec((err, user) => {
+            if (user === null) {
+                res.sendStatus(404)
+            }
+            else{
+                bcrypt.compare(req.body.password, user.password, function(err, response) {
+                    if(response) {
+                        let token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60), data: {email: user.email}}, 'mySuperSecrett');
+                        const response = {user: user, token: token}
+                        res.status(200).json(response)
+                    } else {
+                        res.sendStatus(404)
+                    }
+                });
+            }
+        });
+
 };
 
 export const updateUser = (req, res) => {

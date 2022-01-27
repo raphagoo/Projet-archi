@@ -1,5 +1,6 @@
 import api from '../interfaces/apiInterface';
 import { default as log } from '../interfaces/consoleLogger'
+import {router} from "../router";
 
 const token = localStorage.getItem('token');
 const state = token
@@ -72,6 +73,7 @@ const mutations = {
     logoutSuccess(state){
         log.info('account.module.logout.success')
         state.user = null
+        router.push('/')
     },
     listOrdersSuccess(state, orders){
         orders = orders.filter(order => order.customer.email === state.user.email)

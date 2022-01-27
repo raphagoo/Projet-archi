@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <h1 class="text-center">User</h1>
         <v-card class="ma-3" :key="order.id" v-for="order in user.orders">
             <v-card-title>{{order.description}}</v-card-title>
             <v-card-subtitle>{{order.amount * 1.0 / 100}} € - Payé via {{order.charges.data[0].payment_method_details.card.brand}} -{{order.charges.data[0].payment_method_details.card.last4}}</v-card-subtitle>
@@ -10,6 +11,7 @@
                 <v-btn v-else disabled>Reviewing ticket</v-btn>
             </v-card-actions>
         </v-card>
+        <span v-if="user.orders.length < 1">Pas de commandes réalisées</span>
         <v-dialog v-model="overlay">
             <v-form ref="form" v-model="valid">
                 <v-card class="pa-3">

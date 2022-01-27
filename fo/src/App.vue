@@ -11,7 +11,7 @@
 
          <v-spacer></v-spacer>
 
-         <router-link to="/user">
+         <router-link v-if="account" to="/user">
              <v-btn icon>
                  <v-icon>person</v-icon>
              </v-btn>
@@ -22,11 +22,35 @@
                 <v-icon>shopping_cart</v-icon>
              </v-btn>
          </router-link>
+         <v-btn v-if="account" @click="logOut" icon>
+             <v-icon>logout</v-icon>
+         </v-btn>
+         <router-link to="/login">
+            <v-btn v-if="!account" icon>
+                <v-icon>login</v-icon>
+            </v-btn>
+         </router-link>
      </v-app-bar>
     <router-view/>
   </v-app>
 </template>
+<script>
+import {mapActions, mapState} from "vuex";
 
+export default {
+    computed: {
+        ...mapState({
+            account: state => state.account.user
+        })
+    },
+    methods: {
+        ...mapActions('account', ['logout']),
+        logOut(){
+            this.logout()
+        }
+    }
+}
+</script>
 <style lang="scss">
 // @import '~normalize.css';
 // @import '~reset-css/_reset.scss';

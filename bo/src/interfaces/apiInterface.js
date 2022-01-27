@@ -41,7 +41,7 @@ api.interceptors.response.use(function (response) {
     else if(403 === error.response.status){
         Swal.fire({
             title: "Forbidden",
-            text: "This username already exists",
+            text: "Secret key is wrong",
             icon: "error",
         })
     }

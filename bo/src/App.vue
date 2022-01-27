@@ -8,12 +8,30 @@
             </router-link>
 
             <v-toolbar-title>Back archi</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn v-if="account" @click="logOut">Log out</v-btn>
 
         </v-app-bar>
         <router-view/>
     </v-app>
 </template>
+<script>
+import {mapActions, mapState} from "vuex";
 
+export default {
+    computed: {
+        ...mapState({
+            account: state => state.account.user
+        })
+    },
+    methods: {
+        ...mapActions('account', ['logout']),
+        logOut(){
+           this.logout()
+        }
+    }
+}
+</script>
 <style lang="scss">
 // @import '~normalize.css';
 // @import '~reset-css/_reset.scss';

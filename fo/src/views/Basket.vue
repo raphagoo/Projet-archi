@@ -7,7 +7,7 @@
                     <v-list-item three-line>
                         <v-list-item-content>
                             <div class="text-overline mb-4">
-                                Vêtement
+                                {{product.metadata.type}}
                             </div>
                             <v-list-item-title class="text-h5 mb-1">
                                 {{product.quantity}}x {{product.name}}
@@ -36,6 +36,30 @@
                 @loading="v => loading = v"
             />
             <v-btn class="ma-3 cyan" @click="submit">Pay now!</v-btn>
+            <h2>Ajouter d'autres produits..</h2>
+            <v-row dense>
+                <v-col cols="4" v-for="product in matchingProducts" :key="product.id">
+                    <v-card class="mx-auto" outlined>
+                        <v-list-item three-line>
+                            <v-list-item-content>
+                                <div class="text-overline mb-4">
+                                    {{product.metadata.type}}
+                                </div>
+                                <v-list-item-title class="text-h5 mb-1">
+                                    {{product.name}}
+                                </v-list-item-title>
+                                <v-list-item-subtitle>{{product.price.data[0].unit_amount * 1.0 / 100}} €</v-list-item-subtitle>
+                            </v-list-item-content>
+
+                            <v-list-item-avatar tile size="80"><v-img :src="product.images[0]"></v-img></v-list-item-avatar>
+                        </v-list-item>
+
+                        <v-card-actions>
+                            <v-btn @click="addBasket(product)" outlined rounded text><v-icon>add</v-icon>Add to basket</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-col>
+            </v-row>
         </div>
         <div v-else>
             Votre panier est vide
@@ -45,7 +69,7 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import { StripeCheckout } from '@vue-stripe/vue-stripe';
+import {StripeCheckout} from '@vue-stripe/vue-stripe';
 import $config from 'config'
 import Swal from "sweetalert2";
 
@@ -55,7 +79,30 @@ export default {
     computed: {
         ...mapState({
             basket: state => state.basket,
-        })
+            products: state => state.product.list
+        }),
+        matchingProducts(){
+            let typeArray = []
+            let matchingProducts = []
+            this.$store.state.basket.products.forEach(product => {
+                typeArray.push(product.metadata.type)
+            })
+            this.$store.state.product.list.forEach(product => {
+                if(typeArray.includes(product.metadata.type)) {
+                    matchingProducts.push(product)
+                    this.$store.state.basket.products.forEach(item => {
+                        if(item.id === product.id){
+                            matchingProducts = matchingProducts.filter(toFilter => toFilter.id !== item.id)
+                        }
+                    })
+                }
+            })
+            // Shuffle array
+            const shuffled = matchingProducts.sort(() => 0.5 - Math.random());
+
+            // Get sub-array of first n elements after shuffled
+            return shuffled.slice(0, 4)
+        }
     },
     created() {
         let url_string = window.location.href
@@ -96,6 +143,7 @@ export default {
     methods: {
         ...mapActions('basket', {
             removeOne: 'removeOne',
+            addToBasket: 'addToBasket',
             remove: 'remove'
         }),
         submit () {
@@ -107,6 +155,9 @@ export default {
         },
         removeProduct(product){
             this.remove(product)
+        },
+        addBasket(product){
+            this.addToBasket(product)
         }
     },
 }

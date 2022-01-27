@@ -16,6 +16,14 @@ export const UserSchema = new Schema({
     },
     stripe_id: {
         type: String
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    isMarket: {
+        type: Boolean,
+        default: false
     }
 });
 
