@@ -5,7 +5,8 @@
 
 ## Description
 
-## Project setup
+## Lancement du projet
 
 - Run npm install
+- Créer un fichier .env à la racine du projet et s'inspirer du template pour créer la clé secrète
 - Run npm start
