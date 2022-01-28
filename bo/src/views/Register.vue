@@ -52,9 +52,9 @@ export default {
             user: {
                 password: '',
                 email: '',
-                isAdmin: true
+                isAdmin: true,
+                secretKey: ''
             },
-            secretKey: ''
         }
     },
     methods: {
