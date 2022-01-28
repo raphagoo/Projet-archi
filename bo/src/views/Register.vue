@@ -22,7 +22,7 @@
                 </div>
                 <div class="ma-3">
                     <v-text-field
-                        v-model="secretKey"
+                        v-model="user.secretKey"
                         label="Secret key"
                         type="password"
                         required
