@@ -15,7 +15,6 @@ const actions = {
 const mutations = {
     addToBasketSuccess(state, product){
         state.totalPrice = state.totalPrice + (product.price.data[0].unit_amount * 1.0 / 100)
-        console.log(state.totalPrice)
         product.quantity = 1
         let exists = state.products.find(item => item.id === product.id)
         if(typeof exists === "undefined"){
